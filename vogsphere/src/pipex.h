@@ -6,13 +6,22 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:20:18 by alevra            #+#    #+#             */
-/*   Updated: 2023/01/19 17:55:59 by alevra           ###   ########lyon.fr   */
+/*   Updated: 2023/01/25 01:15:33 by alevra           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft.h"
+# ifndef READ
+#  define READ 0
+# endif
+# ifndef WRITE
+#  define WRITE 1
+# endif
+
+# include "../libft/libft.h"
+
+void	child_process(int argc, char *cmd, char **envp, int to_read, int to_write);
 
 #endif
