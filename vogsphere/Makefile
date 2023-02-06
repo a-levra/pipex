@@ -6,7 +6,7 @@
 #    By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 16:18:39 by alevra            #+#    #+#              #
-#    Updated: 2023/01/25 00:11:43 by alevra           ###   ########lyon.fr    #
+#    Updated: 2023/02/02 16:55:05 by alevra           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ HEADER = $(NAME).h
 
 SRC =	pipex.c \
 		child_process.c \
+		get_args_w_flags.c
 
 SRC_BONUS =
 

@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:20:18 by alevra            #+#    #+#             */
-/*   Updated: 2023/01/30 15:01:28 by alevra           ###   ########lyon.fr   */
+/*   Updated: 2023/02/02 16:28:21 by alevra           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #  define FILE_2 1
 # endif
 # include "../libft/libft.h"
-
+# include <sys/wait.h>
 void	child_process(int argc, char *cmd, char **envp, int to_read, int to_write);
 
 #endif
