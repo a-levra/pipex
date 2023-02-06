@@ -6,7 +6,7 @@
 #    By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 16:18:39 by alevra            #+#    #+#              #
-#    Updated: 2023/02/02 16:55:05 by alevra           ###   ########lyon.fr    #
+#    Updated: 2023/02/06 22:16:45 by alevra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,19 @@ SRC =	pipex.c \
 
 SRC_BONUS =
 
-FLAGS =# -Wall -Wextra -Werror	
+FLAGS =# -Wall -Wextra -Werror
+# FSAN = -fsanitize=address
 
 OS := $(shell uname)
 ifeq ($(OS),Darwin)
- 
+
 else
 
 endif
-	
+
 OBJ = $(addprefix obj/,$(SRC:.c=.o))
 OBJ_BONUS = $(addprefix obj/,$(SRC_BONUS:.c=.o))
 
-FSAN = #-fsanitize=address
 
 all	: create_obj_folder
 	make -C libft
@@ -40,13 +40,13 @@ all	: create_obj_folder
 	@make end_message
 
 $(NAME): libft/libft.a $(OBJ)
-	cc $(OBJ) $(FSAN) -g3  -L ./libft -lft -o $(NAME)
+	clang $(OBJ) $(FSAN) -g3  -L ./libft -lft -o $(NAME)
 
 $(NAME)_bonus: libft/libft.a $(OBJ) $(OBJ_BONUS)
-	cc $(OBJ) $(OBJ_BONUS) $(FSAN) -g3  -L ./libft -lft -o $(NAME)_bonus
+	clang $(OBJ) $(OBJ_BONUS) $(FSAN) -g3  -L ./libft -lft -o $(NAME)_bonus
 
 obj/%.o : src/%.c src/$(HEADER) Makefile
-		cc -c -g3 ${FLAGS} $(FSAN) -I libft $< -o $@
+		clang -c -g3 ${FLAGS} $(FSAN) -I libft $< -o $@
 
 create_obj_folder :
 	mkdir -p obj
@@ -64,7 +64,7 @@ fclean: clean
 	rm -f $(NAME)
 	rm -f $(NAME)_bonus
 
-re: 
+re:
 	make fclean
 	make all
 

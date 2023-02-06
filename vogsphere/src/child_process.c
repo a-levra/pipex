@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:25:43 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/02 17:12:38 by alevra           ###   ########lyon.fr   */
+/*   Updated: 2023/02/06 22:36:51 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,5 @@ void	child_process(int argc, char *cmd, char **envp, int to_read, int to_write)
 	close(to_read);
 	close(to_write);
 	execve("/bin/bash", args, envp);
-	ft_printf("Enfant encore en vie (cmd = %s)\n", cmd);
 	exit (EXIT_FAILURE);
 }

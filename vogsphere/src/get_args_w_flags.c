@@ -6,14 +6,14 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/02 17:31:38 by alevra           ###   ########lyon.fr   */
+/*   Updated: 2023/02/06 22:43:11 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 static int	how_many_args(char **str);
-static char	*dup_w_quotes(const char *str);
+static char	*dup_w_quotes(char *str);
 
 char	**get_args_w_flags(char **splits)
 {
@@ -34,10 +34,10 @@ char	**get_args_w_flags(char **splits)
 		i ++;
 		while (splits[i] && splits[i][0] == '-')
 		{
-			tmp = ft_strjoin(args[j], (const char *)&space);	
+			tmp = ft_strjoin(args[j], (const char *)&space);
 			free(args[j]);
 			args[j] = tmp;
-			tmp = ft_strjoin(args[j], splits[i]);	
+			tmp = ft_strjoin(args[j], splits[i]);
 			free(args[j]);
 			args[j] = tmp;
 			i++;
@@ -53,9 +53,8 @@ static char	*dup_w_quotes(char *str)
 {
 	char	*res;
 	char	*tmp;
-	const char	*quote = {'"', (char *)0};
+	const char	*quote = "\"";
 
-	quote = '"';
 	tmp = ft_strdup(str);
 	free(str);
 	res = ft_strjoin(quote, tmp);
