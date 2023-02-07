@@ -6,14 +6,14 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:25:43 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/06 22:36:51 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/07 12:19:33 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 //´to_read' is linked to child ´stdin´, and child ´stdout´ is linked to ´to_write´
-void	child_process(int argc, char *cmd, char **envp, int to_read, int to_write)
+void	child_process(char *cmd, char **envp, int to_read, int to_write)
 {
 	int		x;
 	char	*args[] = {"/bin/bash", "-c", cmd, (char*)0};

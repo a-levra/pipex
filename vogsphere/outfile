@@ -1,9 +1,8 @@
 infile
 libft
+-lra
 Makefile
 obj
 outfile
 pipex
-src
-pex
 src

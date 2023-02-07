@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_args_w_flags.c                                 :+:      :+:    :+:   */
+/*   get_args_w_flags_and_paths.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/06 22:43:11 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/07 14:58:24 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static int	how_many_args(char **str);
 static char	*dup_w_quotes(char *str);
 
-char	**get_args_w_flags(char **splits)
+char	***get_args_w_flags_and_paths(char **splits, char **envp)
 {
-	char	**args;
+	char	***args;
 	int		i;
 	int		j;
 	char	space;
@@ -27,25 +27,40 @@ char	**get_args_w_flags(char **splits)
 	space = ' ';
 	i = 0;
 	j = 0;
-	args = malloc(sizeof(char *) * how_many_args(splits));
+	tmp = NULL;
+	args = calloc(sizeof(char **), how_many_args(splits) + 1);
+	if (!args)
+		return (NULL);
+	while (i < how_many_args(splits) + 1)
+	{
+		args[i] = calloc(sizeof(char *), 2);
+		if (!args[i])
+			return (ft_freetab((void **) args, i - 1), free(args), NULL);
+		i++;
+	}
+	i = 0;
 	while (splits[i])
 	{
-		args[j] = ft_strdup(splits[i]);
+		args[j][CMD] = ft_strdup(splits[i]);
 		i ++;
 		while (splits[i] && splits[i][0] == '-')
 		{
-			tmp = ft_strjoin(args[j], (const char *)&space);
+			tmp = ft_strjoin(args[j][CMD], (const char *)&space);
 			free(args[j]);
-			args[j] = tmp;
-			tmp = ft_strjoin(args[j], splits[i]);
+			args[j][CMD] = tmp;
+			tmp = ft_strjoin(args[j][CMD], splits[i]);
 			free(args[j]);
-			args[j] = tmp;
+			args[j][CMD] = tmp;
 			i++;
 		}
-		args[j] = dup_w_quotes(args[j]);
+		args[j][PATH] = get_path(args[j][CMD], envp);
+		ft_printf("args[j][PATH] : %s\n", args[j][PATH]); //debug
+		// args[j][CMD] = dup_w_quotes(args[j][0]);
 		j++;
 	}
-	args[j] = (char *)0;
+	args[j][0] = (char *)0;
+	if (tmp)
+		free(tmp);
 	return (args);
 }
 
