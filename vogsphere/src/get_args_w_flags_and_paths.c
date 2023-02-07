@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/07 14:58:24 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:23:35 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,23 @@ char	***get_args_w_flags_and_paths(char **splits, char **envp)
 	{
 		args[j][CMD] = ft_strdup(splits[i]);
 		i ++;
+		args[j][PATH] = get_path(args[j][CMD], envp);
+		ft_printf("\n\nargs[j][CMD] : %s\n", args[j][CMD]); //debug
 		while (splits[i] && splits[i][0] == '-')
 		{
+			ft_printf("splits[i] : %s\n", splits[i]); //debug
 			tmp = ft_strjoin(args[j][CMD], (const char *)&space);
 			free(args[j]);
 			args[j][CMD] = tmp;
 			tmp = ft_strjoin(args[j][CMD], splits[i]);
-			free(args[j]);
+			ft_printf("tmp : %s\n", tmp); //debug
 			args[j][CMD] = tmp;
+			ft_printf("args[j][CMD] : %s\n", args[j][CMD]); //debug
 			i++;
 		}
-		args[j][PATH] = get_path(args[j][CMD], envp);
-		ft_printf("args[j][PATH] : %s\n", args[j][PATH]); //debug
 		// args[j][CMD] = dup_w_quotes(args[j][0]);
+		ft_printf("args[j][CMD] : %s\n", args[j][CMD]); //debug
+		ft_printf("args[j][PATH] : %s\n", args[j][PATH]); //debug
 		j++;
 	}
 	args[j][0] = (char *)0;

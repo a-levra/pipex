@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:47:34 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/07 14:58:49 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:15:30 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	*get_path(char *cmd, char **envp)
 	{
 		path_w_slash = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(path_w_slash, cmd);
-		ft_printf("path : %s\n", path); //debug
 		free(path_w_slash);
 		if (access(path, F_OK) == 0)
 			return (path);
