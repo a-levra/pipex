@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:20:18 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/07 12:56:07 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/08 01:39:00 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@
 # ifndef FILE_2
 #  define FILE_2 1
 # endif
-# ifndef CMD
-#  define CMD 0
-# endif
-# ifndef PATH
-#  define PATH 1
-# endif
 # include "../libft/libft.h"
 # include <sys/wait.h>
-void	child_process(char *cmd, char **envp, int to_read, int to_write);
+
+typedef struct s_to_exec
+{
+	char		**cmd;
+	char		*path;
+}					t_to_exec;
+
+void	child_process(t_to_exec	to_exec, char **envp, int to_read, int to_write);
 char	*get_path(char *cmd, char **envp);
+
 
 #endif
