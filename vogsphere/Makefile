@@ -6,7 +6,7 @@
 #    By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 16:18:39 by alevra            #+#    #+#              #
-#    Updated: 2023/02/07 12:53:53 by alevra           ###   ########.fr        #
+#    Updated: 2023/02/08 13:20:12 by alevra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC =	pipex.c \
 SRC_BONUS =
 
 FLAGS =# -Wall -Wextra -Werror
-# FSAN = -fsanitize=address
+FSAN = -fsanitize=address
 
 OS := $(shell uname)
 ifeq ($(OS),Darwin)

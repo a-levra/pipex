@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 01:36:11 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/08 18:10:45 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	how_many_flags(char **str);
 
 t_to_exec	*get_args_w_flags_and_paths(char **splits, char **envp)
 {
-	t_to_exec	*to_exec;
+	t_to_exec	*to_exec_tab;
 	int			i;
 	int			j;
 	char		space;
@@ -30,32 +30,38 @@ t_to_exec	*get_args_w_flags_and_paths(char **splits, char **envp)
 	i = 0;
 	j = 0;
 	tmp = NULL;
-	to_exec = calloc(sizeof(char **), how_many_args(splits));
-	if (!to_exec)
+	ft_printf("how_many_args(splits) : %d\n", how_many_args(splits)); //debug
+	to_exec_tab = ft_calloc(how_many_args(splits) + 1, sizeof(t_to_exec));
+	if (!to_exec_tab)
 		return (NULL);
 	i = 0;
 	while (splits[i + 1])
 	{
-		to_exec[j].cmd = calloc(sizeof(char *), 1 + how_many_flags(&splits[i])
-				+ 1);
-		if (!to_exec[j].cmd)
+		to_exec_tab[j].cmd = ft_calloc(how_many_flags(&splits[i]) + 2, sizeof(char **));
+		if (!to_exec_tab[j].cmd)
 		{
 			// free_to_exec(to_exec, j); // a implementer
 			return (NULL);
 		}
+		to_exec_tab[j].cmd[0] = ft_strdup(splits[i]);
+		free(to_exec_tab[j].cmd[0]); //debug
 		i++;
-		to_exec[j].path = get_path(to_exec[j].cmd[0], envp);
 		k = 1;
 		while (splits[i] && splits[i][0] == '-')
 		{
-			to_exec[j].cmd[k] = splits[i];
+			to_exec_tab[j].cmd[k] = ft_strdup(splits[i]);
+			free(to_exec_tab[j].cmd[k]); //debug
 			i++;
 			k++;
 		}
+		to_exec_tab[j].path = get_path(to_exec_tab[j].cmd[0], envp);
+		free(to_exec_tab[j].path);//debug
+		free(to_exec_tab[j].cmd); //debug
 		j++;
 	}
-	i = 0;
-	return (to_exec);
+	free(to_exec_tab); //debug
+	return (NULL); //debug
+	return (to_exec_tab);
 }
 
 static char	*dup_w_quotes(char *str)

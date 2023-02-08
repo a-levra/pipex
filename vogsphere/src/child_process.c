@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:25:43 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 01:37:09 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/08 15:30:39 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	child_process(t_to_exec	to_exec, char **envp, int to_read, int to_write)
 {
 	int		x;
 
-	// ft_printf("\t(child) lets execute cmd_path : [%s][%s]\n", cmd_path[PATH], cmd_path[CMD]);
+	ft_printf("\t(child) lets execute cmd_path : [%s][%s]\n", to_exec.path, to_exec.cmd[0]);
 	dup2(to_read, STDIN_FILENO);
 	dup2(to_write, STDOUT_FILENO);
 	close(to_read);
