@@ -5,3 +5,12 @@ obj
 outfile
 pipex
 src
+pipex
+src
+6 21:23 infile
+drwxr-xr-x 4 alevra 2022_lyon    4096 Feb  8 01:38 libft
+-rw-r--r-- 1 alevra 2022_lyon    1940 Feb  8 13:20 Makefile
+drwxr-xr-x 2 alevra 2022_lyon    4096 Feb  8 22:12 obj
+-rw-r--r-- 1 alevra 2022_lyon     412 Feb  8 22:11 outfile
+-rwxr-xr-x 1 alevra 2022_lyon 1415688 Feb  8 22:12 pipex
+drwxr-xr-x 2 alevra 2022_lyon    4096 Feb  7 12:47 src

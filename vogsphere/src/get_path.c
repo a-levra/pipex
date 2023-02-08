@@ -6,13 +6,13 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:47:34 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 18:10:38 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/08 21:23:50 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	freepath(char ***paths);
+static void	freepath(char **paths);
 
 char	*get_path(char *cmd, char **envp)
 {
@@ -32,18 +32,18 @@ char	*get_path(char *cmd, char **envp)
 		path = ft_strjoin(path_w_slash, cmd);
 		free(path_w_slash);
 		if (access(path, F_OK) == 0)
-			return (freepath(paths), path);
+			return (freepath(paths), free(paths), path);
+		free(path);
 		i++;
 	}
-	return (freepath(&paths), NULL);
+	return (freepath(paths), free(paths), NULL);
 }
 
-static void	freepath(char ***paths)
+static void	freepath(char **paths)
 {
 	int	i;
 
 	i = 0;
-	while (*paths[i])
-		free(*paths[i++]);
-	free(*paths);
+	while(paths[i])
+		free(paths[i++]);
 }

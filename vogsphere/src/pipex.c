@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 17:54:02 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/08 22:12:40 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ void	coucou(int nb_cmd, char **argv, char **envp, int file_fd[2])
 	i = 0;
 	cmd_counter = 0;
 	ft_printf("lets go\n");
-	while (cmd_counter < nb_cmd)
+	while (to_exec_tab[cmd_counter].cmd)
 	{
+		ft_printf("cmd_counter : %d\n", cmd_counter); //debug
 		ft_printf("(parent) forking a child for cmd : %s\n",
 					to_exec_tab[cmd_counter].cmd[0]);
 		pid = fork();
@@ -73,7 +74,17 @@ void	coucou(int nb_cmd, char **argv, char **envp, int file_fd[2])
 		waitpid(pid, NULL, 0);
 		cmd_counter++;
 	}
-	free_to_exec(&to_exec_tab);
+	int a = 0;
+	while ( to_exec_tab[a].cmd != NULL)
+	{
+		int b = 0;
+		while (to_exec_tab[a].cmd[b])
+			free(to_exec_tab[a].cmd[b++]);
+		free(to_exec_tab[a].cmd);
+		free(to_exec_tab[a++].path);
+	}
+	free(to_exec_tab); //debug
+	return ; //debug
 }
 
 static	void	free_to_exec(t_to_exec **to_exec_tab)

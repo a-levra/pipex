@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 18:10:45 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/08 21:55:29 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,19 @@ t_to_exec	*get_args_w_flags_and_paths(char **splits, char **envp)
 			return (NULL);
 		}
 		to_exec_tab[j].cmd[0] = ft_strdup(splits[i]);
-		free(to_exec_tab[j].cmd[0]); //debug
+		ft_printf("to_exec_tab[j].cmd[0] : %s\n", to_exec_tab[j].cmd[0]); //debug
 		i++;
 		k = 1;
 		while (splits[i] && splits[i][0] == '-')
 		{
 			to_exec_tab[j].cmd[k] = ft_strdup(splits[i]);
-			free(to_exec_tab[j].cmd[k]); //debug
+			ft_printf("to_exec_tab[j].cmd[k] : %s\n", to_exec_tab[j].cmd[k]); //debug
 			i++;
 			k++;
 		}
 		to_exec_tab[j].path = get_path(to_exec_tab[j].cmd[0], envp);
-		free(to_exec_tab[j].path);//debug
-		free(to_exec_tab[j].cmd); //debug
 		j++;
 	}
-	free(to_exec_tab); //debug
-	return (NULL); //debug
 	return (to_exec_tab);
 }
 
