@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:20:18 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 01:39:00 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/09 13:29:11 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_to_exec
 	char		*path;
 }					t_to_exec;
 
-void	child_process(t_to_exec	to_exec, char **envp, int to_read, int to_write);
+void	child_proc(t_to_exec	to_exec, char **envp, int to_read, int to_write);
 char	*get_path(char *cmd, char **envp);
 
 

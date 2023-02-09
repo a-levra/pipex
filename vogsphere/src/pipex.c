@@ -6,13 +6,13 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 22:12:40 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/09 14:42:13 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static	void	free_to_exec(t_to_exec **to_exec);
+static void	free_to_exec(t_to_exec **to_exec);
 
 t_to_exec	*get_args_w_flags_and_paths(char **splits, char **envp);
 void		coucou(int argc, char **argv, char **envp, int file_fd[2]);
@@ -40,74 +40,64 @@ int	main(int argc, char **argv, char **envp)
 
 void	coucou(int nb_cmd, char **argv, char **envp, int file_fd[2])
 {
-	int			pipe_fd[2];
-	int			cmd_counter;
+	int			pipe_1[2];
+	int			pipe_2[2];
+	int			pipes[2][2];
 	int			status;
 	int			pid;
 	int			i;
-	t_to_exec	*to_exec_tab;
+	t_to_exec	*cmd_tab;
 	char		*path_w_cmd;
+	int			a;
+	int			b;
+	char		*buf;
 
 	ft_printf("\n\nnb_cmd : %d\n\n", nb_cmd); //debug
-	pipe(pipe_fd);
-	to_exec_tab = (get_args_w_flags_and_paths(&argv[2], envp));
-	if (!to_exec_tab)
+	pipe(pipes[0]);
+	pipe(pipes[1]);
+	cmd_tab = (get_args_w_flags_and_paths(&argv[2], envp));
+	if (!cmd_tab)
 		return ;
 	i = 0;
-	cmd_counter = 0;
-	ft_printf("lets go\n");
-	while (to_exec_tab[cmd_counter].cmd)
+	while (cmd_tab[i].cmd)
 	{
-		ft_printf("cmd_counter : %d\n", cmd_counter); //debug
-		ft_printf("(parent) forking a child for cmd : %s\n",
-					to_exec_tab[cmd_counter].cmd[0]);
+		ft_printf("i : %d\n", i); //debug
+		ft_printf("(parent) forking a child for cmd : %s\n",cmd_tab[i].cmd[0]);
 		pid = fork();
 		if (pid == 0)
 		{
-			if (cmd_counter == 0)
-				child_process(to_exec_tab[cmd_counter], envp, file_fd[FILE_1],
-						pipe_fd[WRITE]);
-			if (cmd_counter == 1)
-				child_process(to_exec_tab[cmd_counter], envp, pipe_fd[READ],
-						file_fd[FILE_2]);
+			if (i == 0)
+			{
+				ft_printf("Writing in pipes[%d]\n", i%2);
+				child_proc(cmd_tab[i], envp, file_fd[FILE_1], pipes[i%2][WRITE]);
+			}
+			if (i != 0 && cmd_tab[i + 1].cmd)
+			{
+				ft_printf("Reading pipes[%d], Writing in pipes[%d]\n", i%2 == 0, i%2);
+				child_proc(cmd_tab[i], envp, pipes[i%2 == 0][READ], pipes[i%2][WRITE]);
+			}
+			if (!cmd_tab[i + 1].cmd)
+			{
+				ft_printf("Reading pipes[%d]\n", i%2 + 1);
+				child_proc(cmd_tab[i], envp, pipes[i%2 + 1][READ], file_fd[FILE_2]);
+			}
 		}
 		waitpid(pid, NULL, 0);
-		cmd_counter++;
+		i++;
 	}
-	int a = 0;
-	while ( to_exec_tab[a].cmd != NULL)
+	a = 0;
+	while (cmd_tab[a].cmd != NULL)
 	{
-		int b = 0;
-		while (to_exec_tab[a].cmd[b])
-			free(to_exec_tab[a].cmd[b++]);
-		free(to_exec_tab[a].cmd);
-		free(to_exec_tab[a++].path);
+		b = 0;
+		while (cmd_tab[a].cmd[b])
+			free(cmd_tab[a].cmd[b++]);
+		free(cmd_tab[a].cmd);
+		free(cmd_tab[a++].path);
 	}
-	free(to_exec_tab); //debug
-	return ; //debug
+	free(cmd_tab); //debug
+	return ;        //debug
 }
 
-static	void	free_to_exec(t_to_exec **to_exec_tab)
+static void	free_to_exec(t_to_exec **cmd_tab)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	ft_printf("to_exec_tab[i].cmd : %s\n", to_exec_tab[i]->cmd[0]); //debug
-	ft_printf("to_exec_tab[i] : %p\n", to_exec_tab[i]); //debug
-	ft_printf("to_exec_tab[i + 1] : %p\n", to_exec_tab[i + 1]); //debug
-	// while (to_exec_tab[i])
-	// {
-	// 	j = 0;
-	// 	ft_printf("free i : %d\n", i); //debug
-	// 	ft_printf("to_exec[i]->cmd[j] : %s\n", to_exec_tab[i]->cmd[j]); //debug
-	// 	while (to_exec_tab[i]->cmd[j])
-	// 		free(to_exec_tab[i]->cmd[j++]);
-	// 	free(to_exec_tab[i]->cmd[j]);
-	// 	free(to_exec_tab[i]->cmd);
-	// 	free(to_exec_tab[i]->path);
-	// 	i++;
-	// 	if (to_exec_tab[i])
-	// 		ft_printf("cdscdsdcds\n");
-	// }
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   child_process.c                                    :+:      :+:    :+:   */
+/*   child_proc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,7 +13,7 @@
 #include "pipex.h"
 
 //´to_read' is linked to child ´stdin´, and child ´stdout´ is linked to ´to_write´
-void	child_process(t_to_exec	to_exec, char **envp, int to_read, int to_write)
+void	child_proc(t_to_exec	to_exec, char **envp, int to_read, int to_write)
 {
 	int		x;
 

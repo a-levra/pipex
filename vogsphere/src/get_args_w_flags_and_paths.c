@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 21:55:29 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/09 13:20:21 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,14 @@ t_to_exec	*get_args_w_flags_and_paths(char **splits, char **envp)
 	i = 0;
 	while (splits[i + 1])
 	{
-		to_exec_tab[j].cmd = ft_calloc(how_many_flags(&splits[i]) + 2, sizeof(char **));
-		if (!to_exec_tab[j].cmd)
-		{
-			// free_to_exec(to_exec, j); // a implementer
-			return (NULL);
-		}
-		to_exec_tab[j].cmd[0] = ft_strdup(splits[i]);
-		ft_printf("to_exec_tab[j].cmd[0] : %s\n", to_exec_tab[j].cmd[0]); //debug
-		i++;
-		k = 1;
-		while (splits[i] && splits[i][0] == '-')
-		{
-			to_exec_tab[j].cmd[k] = ft_strdup(splits[i]);
-			ft_printf("to_exec_tab[j].cmd[k] : %s\n", to_exec_tab[j].cmd[k]); //debug
-			i++;
-			k++;
-		}
+		ft_printf("splits[%d] : %s\n", i, splits[i]); //debug
+		// to_exec_tab[j].cmd = ft_calloc(how_many_flags(&splits[i]) + 2, sizeof(char **));
+		to_exec_tab[j].cmd = ft_split(splits[i], ' ');
 		to_exec_tab[j].path = get_path(to_exec_tab[j].cmd[0], envp);
+		i++;
 		j++;
 	}
+	to_exec_tab[i].cmd = NULL;
 	return (to_exec_tab);
 }
 
@@ -95,9 +83,16 @@ static int	how_many_args(char **str)
 static int	how_many_flags(char **str)
 {
 	int	i;
+	int	res;
 
 	i = 1;
-	while (str[i] && str[i][0] == '-')
+	res = 0;
+	ft_printf("(how many flags)str[0] : %s\n", str[0]); //debug
+	while (str[0][i])
+	{
+		if (str[0][i] == '-')
+			res++;
 		i++;
-	return (i - 1);
+	}
+	return (res);
 }
