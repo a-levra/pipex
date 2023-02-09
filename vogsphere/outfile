@@ -1,10 +1,1 @@
-total 1412
-drwxr-xr-x 2 alevra 2022_lyon    4096 Feb  7 12:47 src
--rwxr-xr-x 1 alevra 2022_lyon 1412408 Feb  9 14:42 pipex
--rw-r--r-- 1 alevra 2022_lyon     519 Feb  9 14:37 outfile
-drwxr-xr-x 2 alevra 2022_lyon    4096 Feb  9 14:42 obj
--rw-r--r-- 1 alevra 2022_lyon    1940 Feb  8 13:20 Makefile
-drwxr-xr-x 4 alevra 2022_lyon    4096 Feb  8 01:38 libft
--rw-r--r-- 1 alevra 2022_lyon      11 Feb  6 21:23 infile
-drwxr-xr-x 4 alevra 2022_lyon    4096 Feb  6 21:23 ..
-drwxr-xr-x 5 alevra 2022_lyon    4096 Feb  9 14:42 .
+     10      83     519

@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/09 14:42:13 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/09 16:46:55 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,34 +52,56 @@ void	coucou(int nb_cmd, char **argv, char **envp, int file_fd[2])
 	int			b;
 	char		*buf;
 
+	i = 0;
 	ft_printf("\n\nnb_cmd : %d\n\n", nb_cmd); //debug
-	pipe(pipes[0]);
-	pipe(pipes[1]);
 	cmd_tab = (get_args_w_flags_and_paths(&argv[2], envp));
 	if (!cmd_tab)
 		return ;
-	i = 0;
+	if (nb_cmd == 1)
+		return (child_proc(cmd_tab[i], envp, file_fd[FILE_1], file_fd[FILE_2]));
+	pipe(pipes[0]);
+	pipe(pipes[1]);
+	// if (nb_cmd == 3)
+	// {
+	// 	while (i < 3)
+	// 	{
+	// 		pid = fork();
+	// 		if (pid == 0 && i == 0)
+	// 			child_proc(cmd_tab[i], envp, file_fd[FILE_1], pipes[0][WRITE]);
+	// 		if (pid == 0 && i == 1)
+	// 			child_proc(cmd_tab[i], envp, pipes[0][READ], pipes[1][WRITE]);
+	// 		if (pid == 0 && i == 2)
+	// 		{
+	// 			close(pipes[0][WRITE]);
+	// 			child_proc(cmd_tab[i], envp, pipes[1][READ], file_fd[FILE_2]);
+	// 		}
+	// 		i++;
+	// 	}
+	// 	return ;
+	// }
 	while (cmd_tab[i].cmd)
 	{
-		ft_printf("i : %d\n", i); //debug
-		ft_printf("(parent) forking a child for cmd : %s\n",cmd_tab[i].cmd[0]);
+		ft_printf("(parent) forking a child for cmd : %s\n", cmd_tab[i].cmd[0]);
 		pid = fork();
 		if (pid == 0)
 		{
 			if (i == 0)
 			{
-				ft_printf("Writing in pipes[%d]\n", i%2);
-				child_proc(cmd_tab[i], envp, file_fd[FILE_1], pipes[i%2][WRITE]);
+				ft_printf("Writing in pipes[%d]\n", i % 2);
+				close(pipes[i % 2][READ]);
+				child_proc(cmd_tab[i], envp, file_fd[FILE_1], pipes[i % 2][WRITE]);
 			}
 			if (i != 0 && cmd_tab[i + 1].cmd)
 			{
-				ft_printf("Reading pipes[%d], Writing in pipes[%d]\n", i%2 == 0, i%2);
-				child_proc(cmd_tab[i], envp, pipes[i%2 == 0][READ], pipes[i%2][WRITE]);
+				ft_printf("Reading pipes[%d], Writing in pipes[%d]\n", i % 2 == 0, i % 2);
+				close(pipes[i % 2][READ]);
+				close(pipes[i % 2 == 0][WRITE]);
+				child_proc(cmd_tab[i], envp, pipes[i % 2 == 0][READ], pipes[i % 2][WRITE]);
 			}
 			if (!cmd_tab[i + 1].cmd)
 			{
-				ft_printf("Reading pipes[%d]\n", i%2 + 1);
-				child_proc(cmd_tab[i], envp, pipes[i%2 + 1][READ], file_fd[FILE_2]);
+				ft_printf("Reading pipes[%d]\n", i % 2 == 0);
+				child_proc(cmd_tab[i], envp, pipes[i % 2 == 0][READ], file_fd[FILE_2]);
 			}
 		}
 		waitpid(pid, NULL, 0);
