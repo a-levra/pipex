@@ -1,6 +1,6 @@
-1
-2
-3
-4
-5
-6
+liste des commandes qui marche pô
+
+env -i ./pipex infile cat ls outfile [SEGFAULT]
+./pipex infile cate ellesse outfile [náffiche pas "command not found"]
+./pipex infile /usr/bin/cat /usr/bin/cat outfile [n'exécute pas les commandes]
+./pipex infile ./cat ./cat outfile [ne prend pas les chemins relatifs]
