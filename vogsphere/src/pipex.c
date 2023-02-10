@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/10 14:00:46 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/10 16:28:12 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,3 +36,5 @@ int	main(int argc, char **argv, char **envp)
 		return (-1);
 	return (0);
 }
+
+// TOOD : if_heredoc_read_stdin()
