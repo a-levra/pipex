@@ -6,11 +6,18 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 23:06:50 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/09 23:30:36 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/10 15:10:16 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	exit_routine(int pipes[OPEN_MAX][2], int files[2],
+		int pids[OPEN_MAX], int i)
+{
+	close_pipes_and_file_fd(pipes, files, i);
+	wait_all_child_proc(pids, i);
+}
 
 void	wait_all_child_proc(int *pids, int childs_counter)
 {

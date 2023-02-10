@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/10 02:14:13 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/10 14:00:46 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	fd_file1 = open(argv[1], O_RDONLY);
 	if (fd_file1 < 0)
 		perror(argv[1]);
-	fd_file2 = open(argv[argc - 1], O_WRONLY | O_CREAT, 644);
+	fd_file2 = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 644);
 	if (fd_file2 < 0)
 		perror(argv[argc - 1]);
 	files[FILE_1] = fd_file1;
