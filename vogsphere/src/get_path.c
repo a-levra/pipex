@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:47:34 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/08 21:23:50 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/10 02:15:21 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,6 @@ static void	freepath(char **paths)
 	int	i;
 
 	i = 0;
-	while(paths[i])
+	while (paths[i])
 		free(paths[i++]);
 }

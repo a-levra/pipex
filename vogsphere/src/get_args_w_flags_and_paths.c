@@ -6,62 +6,33 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/09 13:20:21 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/10 02:16:03 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 static int	how_many_args(char **str);
-static char	*dup_w_quotes(char *str);
-static int	how_many_flags(char **str);
 
 t_to_exec	*get_args_w_flags_and_paths(char **splits, char **envp)
 {
 	t_to_exec	*to_exec_tab;
 	int			i;
-	int			j;
-	char		space;
-	char		*tmp;
-	char		quote;
-	int			k;
 
-	space = ' ';
 	i = 0;
-	j = 0;
-	tmp = NULL;
-	ft_printf("how_many_args(splits) : %d\n", how_many_args(splits)); //debug
 	to_exec_tab = ft_calloc(how_many_args(splits) + 1, sizeof(t_to_exec));
 	if (!to_exec_tab)
 		return (NULL);
 	i = 0;
 	while (splits[i + 1])
 	{
-		ft_printf("splits[%d] : %s\n", i, splits[i]); //debug
-		// to_exec_tab[j].cmd = ft_calloc(how_many_flags(&splits[i]) + 2, sizeof(char **));
-		to_exec_tab[j].cmd = ft_split(splits[i], ' ');
-		to_exec_tab[j].path = get_path(to_exec_tab[j].cmd[0], envp);
+		to_exec_tab[i].cmd = ft_split(splits[i], ' ');
+		to_exec_tab[i].path = get_path(to_exec_tab[i].cmd[0], envp);
+		to_exec_tab[i].envp = envp;
 		i++;
-		j++;
 	}
 	to_exec_tab[i].cmd = NULL;
 	return (to_exec_tab);
-}
-
-static char	*dup_w_quotes(char *str)
-{
-	char		*res;
-	char		*tmp;
-	const char	*quote;
-
-	quote = "\"";
-	tmp = ft_strdup(str);
-	free(str);
-	res = ft_strjoin(quote, tmp);
-	free(tmp);
-	tmp = ft_strjoin(res, quote);
-	res = tmp;
-	return (res);
 }
 
 static int	how_many_args(char **str)
@@ -74,23 +45,6 @@ static int	how_many_args(char **str)
 	while (str[i])
 	{
 		if (str[i][0] != '-')
-			res++;
-		i++;
-	}
-	return (res);
-}
-
-static int	how_many_flags(char **str)
-{
-	int	i;
-	int	res;
-
-	i = 1;
-	res = 0;
-	ft_printf("(how many flags)str[0] : %s\n", str[0]); //debug
-	while (str[0][i])
-	{
-		if (str[0][i] == '-')
 			res++;
 		i++;
 	}
