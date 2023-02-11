@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 23:14:45 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/10 13:57:00 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/11 17:10:53 by alevra           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,27 @@ static void	switch_case(t_to_exec *cmds, int pipes[OPEN_MAX][2], int i,
 static void	case_first(t_to_exec to_exec, int pipes[OPEN_MAX][2], int i,
 		int fd_file_1)
 {
+	char	*buf;
+	char	*delimiter;
+
+	buf = NULL;
 	close(pipes[i][READ]);
+	ft_printf("to_exec.cmd[0] : %s\n", to_exec.cmd[0]); //debug
+	if (ft_strequ(to_exec.cmd[0], "here_doc"))
+	{
+		delimiter = to_exec.cmd[1];
+		ft_printf("delimiter : %s\n", delimiter); //debug
+		buf = get_next_line(0);
+		buf = get_next_line(0); //cannot get two consecutives gnl on stdin ! .. must resolve this
+		while (!ft_strequ(buf, delimiter))
+		{
+			ft_printf("buf : %s\n", buf); //debug
+			write(pipes[i][WRITE], buf, ft_strlen(buf) + 1);	 //segv
+			buf = get_next_line(0);
+		}
+		// exit(EXIT_SUCCESS); //wip test
+	}
+	ft_printf("pas coucou\n"); //debug
 	if (fd_file_1 > 0 && to_exec.path)
 		child_proc(to_exec, fd_file_1, pipes[i][WRITE]);
 	close(pipes[i][WRITE]);
