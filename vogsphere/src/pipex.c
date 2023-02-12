@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/11 01:42:03 by alevra           ###   ########lyon.fr   */
+/*   Updated: 2023/02/12 23:25:16 by alevra           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	int			files[2];
 	t_to_exec	*cmds;
-	char		*here_doc_delimiter;
 
 	if (argc < 4)
 		return (ft_printf("Not enough args\n"), -1);
-	if (ft_strequ(argv[1], "here_doc"))
-		here_doc_delimiter = argv[2];
-	else
+	if (!ft_strequ(argv[1], "here_doc"))
 	{
-		here_doc_delimiter = NULL;
 		files[FILE_1] = open(argv[1], O_RDONLY);
 		if (files[FILE_1] < 0)
 			perror(argv[1]);
@@ -42,4 +38,3 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-// TOOD : if_heredoc_read_stdin()

@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 23:14:45 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/11 17:10:53 by alevra           ###   ########lyon.fr   */
+/*   Updated: 2023/02/13 00:10:13 by alevra           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	execute_all_cmds(t_to_exec *cmds, int files[2])
 	i = 0;
 	while (cmds[i].cmd)
 	{
+		ft_printf("i : %d\n", i); //debug
 		if (!cmds[i].path)
 			ft_printf("command not found: %s\n", cmds[i].cmd[0]);
 		if (pipe(pipes[i]) < 0)
@@ -37,7 +38,10 @@ int	execute_all_cmds(t_to_exec *cmds, int files[2])
 		if (pids[i] < 0)
 			return (ft_printf("Failed to fork\n"), -1);
 		if (pids[i] == 0)
+		{
+			ft_printf("child %d created\n", i); //debug
 			switch_case(cmds, pipes, i, files);
+		}
 		i++;
 	}
 	return (exit_routine(pipes, files, pids, i), free_cmd_tab(&cmds), 0);
@@ -62,22 +66,20 @@ static void	case_first(t_to_exec to_exec, int pipes[OPEN_MAX][2], int i,
 
 	buf = NULL;
 	close(pipes[i][READ]);
-	ft_printf("to_exec.cmd[0] : %s\n", to_exec.cmd[0]); //debug
-	if (ft_strequ(to_exec.cmd[0], "here_doc"))
+	if (i == 0 && ft_strequ(to_exec.cmd[0], "here_doc"))
 	{
 		delimiter = to_exec.cmd[1];
-		ft_printf("delimiter : %s\n", delimiter); //debug
 		buf = get_next_line(0);
-		buf = get_next_line(0); //cannot get two consecutives gnl on stdin ! .. must resolve this
-		while (!ft_strequ(buf, delimiter))
+		while (ft_strncmp(buf, delimiter, ft_max(ft_strlen(buf),
+					ft_strlen(delimiter))) != 10)
 		{
-			ft_printf("buf : %s\n", buf); //debug
-			write(pipes[i][WRITE], buf, ft_strlen(buf) + 1);	 //segv
+			write(pipes[i][WRITE], buf, ft_strlen(buf) + 1);
 			buf = get_next_line(0);
 		}
-		// exit(EXIT_SUCCESS); //wip test
+		close(pipes[i][WRITE]);
+		ft_printf("ok\n"); //debug
+		return ;
 	}
-	ft_printf("pas coucou\n"); //debug
 	if (fd_file_1 > 0 && to_exec.path)
 		child_proc(to_exec, fd_file_1, pipes[i][WRITE]);
 	close(pipes[i][WRITE]);
