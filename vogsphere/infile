@@ -3,5 +3,6 @@ liste des commandes qui marche pô
 # env -i ./pipex infile cat ls outfile [SEGFAULT]
 # ./pipex infile cate ellesse outfile [n'affiche pas "command not found"]
 # le fichier outfile possede du texte-reliquat de la dernière commande
-./pipex infile /usr/bin/cat /usr/bin/cat outfile [n'exécute pas les commandes] (s'il y a des /, il faut tester directement le chemin absolu)
+# ./pipex infile /usr/bin/cat /usr/bin/cat outfile [n'exécute pas les commandes] (s'il y a des /, il faut tester directement le chemin absolu)
 ./pipex infile ./cat ./cat outfile [ne prend pas les chemins relatifs]
+ne gere probablement ./pipex infile cat "" outfile

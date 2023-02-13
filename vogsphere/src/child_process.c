@@ -17,6 +17,7 @@ void	child_proc(t_to_exec to_exec, int to_read, int to_write)
 {
 	int		x;
 
+	ft_printf("about to xecute (%s)\n", to_exec.cmd[0]);
 	dup2(to_read, STDIN_FILENO);
 	dup2(to_write, STDOUT_FILENO);
 	close(to_read);
