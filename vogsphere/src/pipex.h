@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:20:18 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/10 13:43:35 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/14 01:20:07 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ void		free_cmd_tab2(t_to_exec *cmds);
 t_to_exec	*get_args_w_flags_and_paths(char **splits, char **envp);
 void		exit_routine(int pipes[OPEN_MAX][2], int files[2],
 				int pids[OPEN_MAX], int i);
+int			execute_all_cmds(t_to_exec *cmds, int files[2]);
 #endif

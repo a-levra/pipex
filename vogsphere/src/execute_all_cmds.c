@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 23:14:45 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/14 00:56:00 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/14 01:34:43 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	execute_all_cmds(t_to_exec *cmds, int files[2])
 			// ft_printf("child %d created\n", i); //debug
 			switch_case(cmds, pipes, i, files);
 		}
-		ft_printf("(parent loop %d)Closing pipes[%d][READ/WRITE]\n", i, i);
+		// ft_printf("(parent loop %d)Closing pipes[%d][READ/WRITE]\n", i, i);
 		close(pipes[i][WRITE]);
 		i++;
 	}
@@ -68,30 +68,34 @@ static void	case_first(t_to_exec to_exec, int pipes[OPEN_MAX][2], int i,
 	char	*delimiter;
 
 	buf = NULL;
-	// ft_printf("(child %d)closing pipes[%d][READ](%d)\n",i , i, pipes[i][READ]); //debug
+	// ft_printf("(child %d)closing pipes[%d][READ](%d)\n",i , i,
+			// pipes[i][READ]); //debug
 	close(pipes[i][READ]);
 	if (i == 0 && ft_strequ(to_exec.cmd[0], "here_doc"))
 	{
 		delimiter = to_exec.cmd[1];
-		// ft_printf("case first\n"); //debug
+		ft_printf(">");
 		buf = get_next_line(0);
 		while (buf && ft_strncmp(buf, delimiter, ft_max(ft_strlen(buf),
 					ft_strlen(delimiter))) != 10)
 		{
 			write(pipes[i][WRITE], buf, ft_strlen(buf) + 1);
 			free(buf);
+			ft_printf(">");
 			buf = get_next_line(0);
 		}
 		if (buf)
 			free(buf);
 		close(fd_file_1);
-		// ft_printf("(child %d)closing pipes[%d][WRITE](%d)\n",i , i, pipes[i][WRITE]); //debug
+		// ft_printf("(child %d)closing pipes[%d][WRITE](%d)\n",i , i,
+				// pipes[i][WRITE]); //debug
 		close(pipes[i][WRITE]);
 		exit(1);
 	}
 	if (fd_file_1 > 0 && to_exec.path)
 	{
-		// ft_printf("closing fd_file_1 and pipes[%d][WRITE](%d)\n", i, pipes[i][WRITE]); //debug
+		// ft_printf("closing fd_file_1 and pipes[%d][WRITE](%d)\n", i,
+				// pipes[i][WRITE]); //debug
 		child_proc(to_exec, fd_file_1, pipes[i][WRITE]);
 	}
 	close(pipes[i][WRITE]);
@@ -101,13 +105,13 @@ static void	case_first(t_to_exec to_exec, int pipes[OPEN_MAX][2], int i,
 
 static void	case_middle(t_to_exec to_exec, int pipes[OPEN_MAX][2], int i)
 {
-	// ft_printf("closing pipes[%d][READ] and pipes[%d][WRITE]\n", i, i -1); //debug
-
+	// ft_printf("closing pipes[%d][READ] and pipes[%d][WRITE]\n", i, i -1);
+		//debug
 	close(pipes[i][READ]);
 	close(pipes[i - 1][WRITE]);
 	if (to_exec.path)
 		child_proc(to_exec, pipes[i - 1][READ], pipes[i][WRITE]);
-	ft_printf("\"%s\" : Command not found\n", to_exec.cmd[0]);
+	ft_printf("\"%s\" : Command not found\n", to_exec.cmd[0]); // doublon ?
 	exit(EXIT_FAILURE);
 }
 
