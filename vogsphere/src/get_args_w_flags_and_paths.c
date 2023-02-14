@@ -6,14 +6,13 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/14 00:10:47 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/14 17:00:16 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 static int	how_many_args(char **str);
-
 
 /*
 BEHAVIOR EXAMPLE:
@@ -43,22 +42,25 @@ t_to_exec	*get_args_w_flags_and_paths(char **argv, char **envp)
 
 	i = 0;
 	hd = ft_strequ(argv[1], "here_doc");
-		to_exec_tab = ft_calloc(how_many_args(&argv[2 + hd]) + 1 + hd, sizeof(t_to_exec));
+	to_exec_tab = ft_calloc(how_many_args(&argv[2 + hd]) + 1 + hd,
+			sizeof(t_to_exec));
 	if (!to_exec_tab)
 		return (NULL);
 	if (hd)
 	{
-		to_exec_tab[0].cmd = ft_calloc(3, sizeof(char *)); // a proteger
-		to_exec_tab[0].cmd[0] = ft_strdup("here_doc");
-				to_exec_tab[0].cmd[1] = ft_strdup(argv[2]);
-		to_exec_tab[0].path = ft_strdup("");
+		to_exec_tab[0].cmd = ft_calloc(3, sizeof(char *));
+		if (!to_exec_tab)
+			return (free(to_exec_tab), NULL);
+		to_exec_tab[0].cmd[0] = ft_strdup("here_doc"); // a proteger
+		to_exec_tab[0].cmd[1] = ft_strdup(argv[2]); // a proteger
+		to_exec_tab[0].path = ft_strdup(""); // a proteger
 		to_exec_tab[0].envp = NULL;
 	}
 	i = 0 + hd;
 	while (argv[i + 2 + 1])
 	{
-		to_exec_tab[i].cmd = ft_split(argv[i + 2], ' ');
-				to_exec_tab[i].path = get_path(to_exec_tab[i].cmd[0], envp);
+		to_exec_tab[i].cmd = ft_split(argv[i + 2], ' '); // a proteger
+		to_exec_tab[i].path = get_path(to_exec_tab[i].cmd[0], envp);
 		to_exec_tab[i].envp = envp;
 		i++;
 	}
@@ -80,4 +82,9 @@ static int	how_many_args(char **str)
 		i++;
 	}
 	return (res);
+}
+
+static int set_to_exec_elmnt()
+{
+
 }

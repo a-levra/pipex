@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/14 01:24:46 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/14 13:40:07 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int	main(int argc, char **argv, char **envp)
 		return (ft_printf("Errors while parsing the commands\n"), 0);
 	if (execute_all_cmds(cmds, files) < 0)
 		return (-1);
+	close(files[FILE_2]);
 	return (0);
 }

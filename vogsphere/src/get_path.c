@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:47:34 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/10 16:00:17 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/14 17:00:45 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ char	*get_path(char *cmd, char **envp)
 		return (test_abs_or_rel_path(cmd));
 	while (ft_strnstr(envp[i], "PATH", 4) == 0)
 		i++;
-	paths = ft_split(envp[i] + 5, ':');
+	paths = ft_split(envp[i] + 5, ':'); // a proteger
 	i = 0;
 	while (paths[i])
 	{
-		path_w_slash = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(path_w_slash, cmd);
+		path_w_slash = ft_strjoin(paths[i], "/"); // a proteger
+		path = ft_strjoin(path_w_slash, cmd); // a proteger
 		free(path_w_slash);
 		if (access(path, F_OK) == 0)
 			return (freepath(paths), free(paths), path);

@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-//´to_read' linked to child ´stdin´ and child ´stdout´ linked to ´to_write´
+//'to_read' linked to child ´stdin´ and child ´stdout´ linked to ´to_write´
 void	child_proc(t_to_exec to_exec, int to_read, int to_write)
 {
 	int		x;
