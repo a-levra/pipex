@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/16 15:52:23 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/16 19:42:49 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	how_many_args(char **str);
 static int	try_to_set_elmt_zero_case_heredoc(t_to_exec *to_exec_tab,
 				char **argv);
+static int	check_here_doc(char *str);
 
 /*
 BEHAVIOR EXAMPLE:
@@ -43,7 +44,7 @@ t_to_exec	*get_args_w_flags_and_paths(char **argv, char **envp)
 	int			hd;
 
 	i = 0;
-	hd = ft_strequ(argv[1], "here_doc");
+	hd = check_here_doc(argv[1]);
 	to_exec_tab = ft_calloc(how_many_args(&argv[2 + hd]) + 1 + hd,
 			sizeof(t_to_exec));
 	if (!to_exec_tab)
@@ -62,6 +63,14 @@ t_to_exec	*get_args_w_flags_and_paths(char **argv, char **envp)
 	}
 	to_exec_tab[i].cmd = NULL;
 	return (to_exec_tab);
+}
+
+static int	check_here_doc(char *str)
+{
+	if (BONUS)
+		if (ft_strequ(str, "here_doc"))
+			return (1);
+	return (0);
 }
 
 static int	try_to_set_elmt_zero_case_heredoc(t_to_exec *to_exec_tab,

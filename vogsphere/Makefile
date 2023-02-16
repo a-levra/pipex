@@ -6,7 +6,7 @@
 #    By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 16:18:39 by alevra            #+#    #+#              #
-#    Updated: 2023/02/16 17:21:29 by alevra           ###   ########.fr        #
+#    Updated: 2023/02/16 18:56:56 by alevra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,10 +25,8 @@ SRC =	pipex.c \
 BONUS_FLAG = -DBONUS_FLAG
 FLAGS = -Wall -Wextra -Werror
 FSAN = -fsanitize=address
-
 OBJ = $(addprefix obj/,$(SRC:.c=.o))
 OBJ_BONUS = $(addprefix bonus/,$(SRC:.c=.o))
-
 
 all	: create_obj_folder
 	make -C libft
@@ -36,20 +34,20 @@ all	: create_obj_folder
 	@make end_message
 
 obj/%.o : src/%.c src/$(HEADER) Makefile
-		cc -c -g3 ${FLAGS} $(FSAN) -I libft $< -o $@
+	cc -c -g3 ${FLAGS} $(FSAN) -I libft $< -o $@
 
 bonus/%.o : src/%.c src/$(HEADER) Makefile
-				cc -c -g3 -O3 ${FLAGS} $(FSAN) $(BONUS_FLAG) -I libft $< -o $@
+	cc -c -g3 -O3 ${FLAGS} $(FSAN) $(BONUS_FLAG) -I libft $< -o $@
 
 $(NAME): libft/libft.a $(OBJ)
 	cc $(OBJ) $(FSAN) -g3  -L ./libft -lft -o $(NAME)
 
 $(NAME)_bonus: libft/libft.a $(OBJ_BONUS)
-	cc $(OBJ_BONUS) $(FSAN) -g3  -L ./libft -lft -o $(NAME)
+	cc $(OBJ_BONUS) $(FSAN) -g3  -L ./libft -lft -o $(NAME)_bonus
 
 create_obj_folder :
-	mkdir -p obj
-	mkdir -p obj_bonus
+	@mkdir -p obj
+	@mkdir -p bonus
 
 clean:
 	rm -f $(OBJ)
@@ -72,9 +70,10 @@ end_message:
 	@echo "Done !"
 
 bonus:
-	make create_obj_folder
+	@make create_obj_folder
 	make -C libft
 	make $(NAME)_bonus
 	@make end_message
 
 .PHONY: all clean fclean re create_obj_folder end_message bonus
+

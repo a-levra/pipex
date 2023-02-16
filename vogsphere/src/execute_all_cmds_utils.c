@@ -6,7 +6,7 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 23:14:45 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/16 17:29:29 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/16 18:37:49 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	here_doc_routine(int pipes[OPEN_MAX][2], int i, char *delimiter)
 		bytes_written = \
 		write(pipes[i][WRITE], to_write_in_pipe, ft_strlen(to_write_in_pipe));
 		if (bytes_written < 0)
-			{
-				ft_printf("Something went wrong when trying to write in pipe %d\n", i);
-				ft_printf("%s\n", strerror(errno)); //debug
-			}
+		{
+			ft_printf("Error while trying to write in pipe %d\n", i);
+			ft_printf("%s\n", strerror(errno));
+		}
 	}
 	free(to_write_in_pipe);
 }
