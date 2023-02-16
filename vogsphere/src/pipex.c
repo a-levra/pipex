@@ -6,19 +6,22 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:19:25 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/14 13:40:07 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/16 17:16:20 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+static int	check_args(int argc, char **argv);
 
 int	main(int argc, char **argv, char **envp)
 {
 	int			files[2];
 	t_to_exec	*cmds;
 
-	if (argc < 4)
-		return (ft_printf("Not enough args\n"), -1);
+	ft_printf("BONUS : %d\n", BONUS); //debug
+	if (check_args(argc, argv) < 0)
+		return (-1);
 	if (!ft_strequ(argv[1], "here_doc"))
 	{
 		files[FILE_1] = open(argv[1], O_RDONLY);
@@ -30,9 +33,21 @@ int	main(int argc, char **argv, char **envp)
 		perror(argv[argc - 1]);
 	cmds = (get_args_w_flags_and_paths(argv, envp));
 	if (!cmds)
-		return (ft_printf("Errors while parsing the commands\n"), 0);
+	{
+		if (!ft_strequ(argv[1], "here_doc"))
+			close(files[FILE_1]);
+		return (close(files[FILE_2]), -1);
+	}
 	if (execute_all_cmds(cmds, files) < 0)
 		return (-1);
-	close(files[FILE_2]);
+	return (close(files[FILE_2]), 0);
+}
+
+static int	check_args(int argc, char **argv)
+{
+	if (argc != 5 && !BONUS)
+		return (ft_printf("Incorrect number of args\n"), -1);
+	if (argc < 5 || (ft_strequ(argv[1], "here_doc") && argc < 6))
+		return (ft_printf("Not enough args\n"), -1);
 	return (0);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   child_proc.c                                    :+:      :+:    :+:   */
+/*   execute_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,14 +13,12 @@
 #include "pipex.h"
 
 //'to_read' linked to child ´stdin´ and child ´stdout´ linked to ´to_write´
-void	child_proc(t_to_exec to_exec, int to_read, int to_write)
+void	execute_cmd(t_to_exec to_exec, int to_read, int to_write)
 {
-	int		x;
-
 	dup2(to_read, STDIN_FILENO);
 	dup2(to_write, STDOUT_FILENO);
 	close(to_read);
 	close(to_write);
 	execve(to_exec.path, to_exec.cmd, to_exec.envp);
-	exit (EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }

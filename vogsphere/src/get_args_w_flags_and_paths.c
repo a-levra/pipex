@@ -6,13 +6,15 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:52:16 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/14 17:00:16 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/16 15:52:23 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 static int	how_many_args(char **str);
+static int	try_to_set_elmt_zero_case_heredoc(t_to_exec *to_exec_tab,
+				char **argv);
 
 /*
 BEHAVIOR EXAMPLE:
@@ -46,26 +48,42 @@ t_to_exec	*get_args_w_flags_and_paths(char **argv, char **envp)
 			sizeof(t_to_exec));
 	if (!to_exec_tab)
 		return (NULL);
-	if (hd)
-	{
-		to_exec_tab[0].cmd = ft_calloc(3, sizeof(char *));
-		if (!to_exec_tab)
-			return (free(to_exec_tab), NULL);
-		to_exec_tab[0].cmd[0] = ft_strdup("here_doc"); // a proteger
-		to_exec_tab[0].cmd[1] = ft_strdup(argv[2]); // a proteger
-		to_exec_tab[0].path = ft_strdup(""); // a proteger
-		to_exec_tab[0].envp = NULL;
-	}
+	if (hd && try_to_set_elmt_zero_case_heredoc(to_exec_tab, argv) < 0)
+		return (ft_printf("Allocation memory error\n"), NULL);
 	i = 0 + hd;
 	while (argv[i + 2 + 1])
 	{
-		to_exec_tab[i].cmd = ft_split(argv[i + 2], ' '); // a proteger
+		to_exec_tab[i].cmd = ft_split(argv[i + 2], ' ');
+		if (!to_exec_tab[i].cmd)
+			return (ft_printf("An error occured (parsing)\n"), NULL);
 		to_exec_tab[i].path = get_path(to_exec_tab[i].cmd[0], envp);
 		to_exec_tab[i].envp = envp;
 		i++;
 	}
 	to_exec_tab[i].cmd = NULL;
 	return (to_exec_tab);
+}
+
+static int	try_to_set_elmt_zero_case_heredoc(t_to_exec *to_exec_tab,
+												char **argv)
+{
+	to_exec_tab[0].cmd = ft_calloc(3, sizeof(char *));
+	if (!to_exec_tab[0].cmd)
+		return (free(to_exec_tab), -1);
+	to_exec_tab[0].cmd[0] = ft_strdup("here_doc");
+	to_exec_tab[0].cmd[1] = ft_strdup(argv[2]);
+	to_exec_tab[0].path = ft_strdup("here_doc");
+	if (!to_exec_tab[0].cmd[0] || !to_exec_tab[0].cmd[1]
+		|| !to_exec_tab[0].path)
+	{
+		free(to_exec_tab[0].cmd[0]);
+		free(to_exec_tab[0].cmd[1]);
+		free(to_exec_tab[0].path);
+		free(to_exec_tab[0].cmd);
+		return (free(to_exec_tab), -1);
+	}
+	to_exec_tab[0].envp = NULL;
+	return (0);
 }
 
 static int	how_many_args(char **str)
@@ -82,9 +100,4 @@ static int	how_many_args(char **str)
 		i++;
 	}
 	return (res);
-}
-
-static int set_to_exec_elmnt()
-{
-
 }

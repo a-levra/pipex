@@ -6,7 +6,7 @@
 #    By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 16:18:39 by alevra            #+#    #+#              #
-#    Updated: 2023/02/14 13:41:49 by alevra           ###   ########.fr        #
+#    Updated: 2023/02/16 17:21:29 by alevra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,19 +15,19 @@ NAME = pipex
 HEADER = $(NAME).h
 
 SRC =	pipex.c \
-		child_process.c \
+		execute_cmd.c \
 		get_args_w_flags_and_paths.c\
 		get_path.c\
 		utils.c \
-		execute_all_cmds.c
+		execute_all_cmds.c \
+		execute_all_cmds_utils.c
 
-SRC_BONUS =
-
-FLAGS =# -Wall -Wextra -Werror
+BONUS_FLAG = -DBONUS_FLAG
+FLAGS = -Wall -Wextra -Werror
 FSAN = -fsanitize=address
 
 OBJ = $(addprefix obj/,$(SRC:.c=.o))
-OBJ_BONUS = $(addprefix obj/,$(SRC_BONUS:.c=.o))
+OBJ_BONUS = $(addprefix bonus/,$(SRC:.c=.o))
 
 
 all	: create_obj_folder
@@ -35,17 +35,21 @@ all	: create_obj_folder
 	make $(NAME)
 	@make end_message
 
-$(NAME): libft/libft.a $(OBJ)
-	cc $(OBJ) $(FSAN) -g3  -L ./libft -lft -o $(NAME)
-
-$(NAME)_bonus: libft/libft.a $(OBJ) $(OBJ_BONUS)
-	cc $(OBJ) $(OBJ_BONUS) $(FSAN) -g3  -L ./libft -lft -o $(NAME)_bonus
-
 obj/%.o : src/%.c src/$(HEADER) Makefile
 		cc -c -g3 ${FLAGS} $(FSAN) -I libft $< -o $@
 
+bonus/%.o : src/%.c src/$(HEADER) Makefile
+				cc -c -g3 -O3 ${FLAGS} $(FSAN) $(BONUS_FLAG) -I libft $< -o $@
+
+$(NAME): libft/libft.a $(OBJ)
+	cc $(OBJ) $(FSAN) -g3  -L ./libft -lft -o $(NAME)
+
+$(NAME)_bonus: libft/libft.a $(OBJ_BONUS)
+	cc $(OBJ_BONUS) $(FSAN) -g3  -L ./libft -lft -o $(NAME)
+
 create_obj_folder :
 	mkdir -p obj
+	mkdir -p obj_bonus
 
 clean:
 	rm -f $(OBJ)
@@ -68,5 +72,9 @@ end_message:
 	@echo "Done !"
 
 bonus:
+	make create_obj_folder
+	make -C libft
+	make $(NAME)_bonus
+	@make end_message
 
 .PHONY: all clean fclean re create_obj_folder end_message bonus

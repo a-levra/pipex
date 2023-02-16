@@ -6,12 +6,18 @@
 /*   By: alevra <alevra@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 16:20:18 by alevra            #+#    #+#             */
-/*   Updated: 2023/02/14 01:20:07 by alevra           ###   ########.fr       */
+/*   Updated: 2023/02/16 17:30:32 by alevra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
+
+# ifndef BONUS_FLAG
+#  define BONUS 0
+# else
+#  define BONUS 1
+# endif
 
 # ifndef READ
 #  define READ 0
@@ -31,6 +37,8 @@
 # include "../libft/libft.h"
 # include <stdio.h>
 # include <sys/wait.h>
+# include <errno.h>
+# include <string.h>
 
 typedef struct s_to_exec
 {
@@ -38,8 +46,12 @@ typedef struct s_to_exec
 	char	*path;
 	char	**envp;
 }			t_to_exec;
-
-void		child_proc(t_to_exec to_exec, int to_read, int to_write);
+void		manage_here_doc(t_to_exec to_exec, int pipes[OPEN_MAX][2], int i,
+				int fd_file_1);
+int			append_new_line_if_not_delim(int fd, char **str_to_append,
+				char *delim);
+void		here_doc_routine(int pipes[OPEN_MAX][2], int i, char *delimiter);
+void		execute_cmd(t_to_exec to_exec, int to_read, int to_write);
 char		*get_path(char *cmd, char **envp);
 void		wait_all_child_proc(int *pids, int childs_counter);
 void		close_pipes_and_file_fd(int pipes[OPEN_MAX][2], int files[2],
